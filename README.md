@@ -34,48 +34,93 @@ Los microservicios permiten dividir una aplicación monolítica en varios servic
 https://repo.maven.apache.org
 https://repo.spring.io
 ## 7. Procedimiento:
-### Paso 1: Liberación del puerto 8080
-Se detectó que el puerto 8080 ya estaba en uso, impidiendo el inicio de api-gateway.
+### Paso 1: Ejecución y visualización de Eureka Server
+Descripción del procedimiento:
+Configuración del proyecto Eureka Server:
+- Se creó un proyecto Spring Boot con las siguientes dependencias necesarias:
+Eureka Server
+Spring Boot DevTools (opcional para recarga en caliente)
+- En la clase principal del proyecto se añadió la anotación @EnableEurekaServer para habilitar el servidor Eureka.
+- En el archivo application.properties o application.yml, se configuraron los parámetros básicos como:
 ```
-netstat -ano | findstr :8080
-````
-```
-taskkill /PID <PID> /F
-````
-### Evidencia:
-<imag!
-### Paso 2:  Corrección de errores BOM en archivos Java
-Los servicios clientes-service y pagos-service no compilaban por un carácter invisible BOM (\ufeff) en sus clases principales.
-### Evidencia:
-<imag!
-### Paso 3:Corrección de dependencias Maven
-Los archivos pom.xml no contenían versiones de algunas dependencias clave, lo que impedía la construcción correcta del proyecto.
-Se agregó la propiedad:
-```
-<spring-cloud.version>Hoxton.SR9</spring-cloud.version>
-````
-Se incluyó el BOM de Spring Cloud:
-```
-<dependencyManagement>
-  <dependencies>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-dependencies</artifactId>
-      <version>${spring-cloud.version}</version>
-      <type>pom</type>
-      <scope>import</scope>
-    </dependency>
-  </dependencies>
-</dependencyManagement>
+server.port=8761
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
 ````
 ### Evidencia:
 <imag!
-
-### Paso 4: Ejecución de microservicios
-Se usó Maven para ejecutar los servicios:
+### Paso 2:Ejecución de Eureka Server desde consola (PowerShell)
+Descripción del procedimiento:
+Compilación del proyecto:
+- Previamente, se generaron los archivos del proyecto mediante Maven o Gradle.
+- El comando de ejecución fue algo similar a:
 ```
-mvn clean spring-boot:run
+./mvnw spring-boot:run
 ````
+### Evidencia:
+<imag!
+### Paso 3: Creación del microservicio API Gateway
+Acceso al proyecto raíz:
+Se ingresó desde PowerShell al directorio del proyecto principal con el comando:
+````
+cd "C:\Users\usuario\Documents\Tercer ciclo\microservicios-proyecto"
+```
+e utilizó el siguiente comando para crear una carpeta destinada al microservicio api-gateway:
+````
+mkdir api-gateway
+```
+Finalmente, se accedió al nuevo directorio con:
+````
+cd api-gateway
+```
+### Evidencia:
+<imag!
+### Paso 4:Creación del proyecto API Gateway desde Spring Initializr
+Acceso a Spring Initializr:
+- Se ingresó al sitio oficial https://start.spring.io para generar un nuevo proyecto Spring Boot.
+Configuración del proyecto:
+- Tipo de proyecto: Maven - Java
+- Versión de Spring Boot: 3.5.3
+- Grupo: com.proyecto.gateway
+- Artefacto y nombre del proyecto: api-gateway
+- Versión de Java: 17
+- Tipo de empaquetado: Jar
+### Evidencia:
+<imag!
+### Paso 5:Configuración del archivo application.properties en Eureka y API Gateway
+Configuración del servidor Eureka (eureka-server):
+````
+server.port=8761
+spring.application.name=eureka-server
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+```
+### Evidencia:
+<imag!
+- Archivo: src/main/resources/application.properties
+### Paso 6: Verificación del Registro de Microservicios en Eureka
+Acceso a la consola de Eureka:
+- Se ingresó a la interfaz web del servidor Eureka a través de http://localhost:8761.
+Visualización de microservicios registrados:
+- Se confirmó que los siguientes servicios se registraron correctamente:
+- API-GATEWAY en el puerto 8080
+- CLIENTES-SERVICE en el puerto 8081
+- PAGOS-SERVICE en el puerto 8082
+Uno adicional marcado como UNKNOWN (puede tratarse de una instancia mal configurada o que no definió su nombre de aplicación).
+### Evidencia:
+<imag!
+### Paso 7: Revisión de archivos de configuración Maven y properties
+pom.xml de Eureka Server:
+- Se revisó el archivo pom.xml dentro de eureka-server, donde se encuentran configurados:
+- El plugin de Spring Boot, que permite empaquetar y ejecutar la aplicación como microservicio.
+- Los repositorios necesarios para obtener las dependencias desde repo.spring.io.
+maven-wrapper.properties:
+- En la carpeta .mvn/wrapper, se encuentra la configuración del wrapper de Maven, especificando:
+- Versión utilizada (3.3.2)
+- Tipo de distribución (only-script)
+- URL del repositorio de Maven para descarga automática.
+Confirmación de estructura:
+Se visualizan correctamente los módulos clientes-service, pagos-service, eureka-server y api-gateway, organizados en un mismo proyecto de microservicios, lo que respalda una arquitectura modular bien estructurada.
 ### Evidencia:
 <imag!
 ## 8. Resultado esperado:
