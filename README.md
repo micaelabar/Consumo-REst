@@ -1,7 +1,7 @@
 
 # Consumo Rest Microservicios
 ## Introducción:
-
+La arquitectura de microservicios representa un enfoque moderno para el desarrollo de aplicaciones, donde cada componente funciona de forma independiente y especializada. Este informe documenta la experiencia práctica de configuración y despliegue de una arquitectura basada en microservicios utilizando Spring Boot, Eureka como servidor de descubrimiento, y tres servicios principales: api-gateway, clientes-service y pagos-service.
 ## 1. Tiempo de duración:
 La configuración, corrección de errores y ejecución exitosa de los microservicios tomó aproximadamente 2 horas, incluyendo identificación de errores, configuración del entorno y pruebas funcionales.
 ## 2. Fundamentos:
